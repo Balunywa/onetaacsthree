@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = 'test'
 
 class InfoForm(FlaskForm):
     
-    timedeparted = StringField ('Departure Time', validators=[DataRequired()])
+    timedeparted = StringField ('Departure Time')
     location = StringField ('Location',validators=[DataRequired()])
     carplate = StringField('Car No Plate', validators=[DataRequired()])
     phonenumber = StringField('Phone Number', validators=[DataRequired()])
