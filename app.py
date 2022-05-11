@@ -31,7 +31,8 @@ class InfoForm(FlaskForm):
         
 @app.route('/',methods=['GET', 'POST'])
 
-def index():       
+def index():
+         
     form = InfoForm()
     
     if form.validate_on_submit(): 
@@ -44,9 +45,10 @@ def index():
         session['relationship'] = form.relationship.data
         session['event'] = form.event.data
         session['feedback'] = form.feedback.data
+        
         return redirect(url_for('thankyou'))
             
-    return render_template('gatepass.html',form=form)
+    return render_template('home.html',form=form)
 
 @app.route('/thankyou')
 def thankyou ():
