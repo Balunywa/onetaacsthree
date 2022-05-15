@@ -4,11 +4,6 @@ from flask import Flask
 import urllib.parse 
 from flask_sqlalchemy import SQLAlchemy
 
-
-#basedir = os.path.abspath(os.path.dirname(__file__))
-#__file__db.py set /basiclaly grabbing the full path name
-
-# Configure Database URI: 
 params = urllib.parse.quote_plus("DRIVER={SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450")
 
 app = Flask(__name__)
@@ -51,13 +46,30 @@ class Singup_Profiles(db.Model):
            self.monthob = monthob
            self.yearob = yearob
            self.sex = sex
-           
+             
     def __repr__(self):
-       
        return f"{self.first_name} {self.last_name} {self.mobile_number} {self.email_id} {self.new_password} {self.dateob} {self.monthob} {self.yearob} {self.sex}"
        
+   ############################################################### 
 
-
-
-
-
+class Friend_Profiles(db.Model):
+    
+    #manaul table name
+    #__tablename__ = 'loop'
+    
+    id = db.Column('friend_id', db.Integer, primary_key = True)
+    
+    first_name = db.Column(db.Text)
+    last_name = db.Column(db.Text)
+    email_id = db.Column(db.Text)
+   
+        
+    def __init__(self, first_name, last_name,email_id):
+        
+           self.first_name = first_name
+           self.last_name = last_name
+           self.email_id = email_id
+             
+    def __repr__(self):
+       
+        return f"{self.first_name} {self.last_name} {self.email_id}"
