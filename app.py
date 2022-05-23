@@ -48,13 +48,7 @@ def index():
         
         return redirect(url_for('thankyou'))
             
-    return render_template('home.html',form=form)
-
-@app.route('/thankyou')
-def thankyou ():
-    
-    return render_template('thankyou.html')
-
+    return render_template('gatepass.html',form=form)
     
 if __name__ == '__main__':
     app.run(debug=True)
