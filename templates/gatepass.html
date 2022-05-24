@@ -23,9 +23,6 @@
             <a class="nav-link disabled" href="#">Disabled</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> <br> <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
       </div>
     </nav>
     <hr>
@@ -78,24 +75,35 @@
                   </div>
                 </div>
 
-                <div id="list-example" class="list-group">
-                  <a class="list-group-item list-group-item-action" href="#list-item-1">Item 1</a>
-                  <a class="list-group-item list-group-item-action" href="#list-item-2">Item 2</a>
-                  <a class="list-group-item list-group-item-action" href="#list-item-3">Item 3</a>
-                  <a class="list-group-item list-group-item-action" href="#list-item-4">Item 4</a>
-                </div>
-                <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
-                  <h5 class="card-title">Current friends attending</h5>
-                  <h4 id="list-item-1">Dawne</h4>
-                  <p>...</p>
-                  <h4 id="list-item-2">Lukman</h4>
-                  <p>...</p>
-                  <h4 id="list-item-3">Lance</h4>
-                  <p>...</p>
-                  <h4 id="list-item-4">Ibra</h4>
-                  <p>...</p>
+                <div class="col-sm-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Enter the relationship</h5>
+                      <p class="card-text">Send Out Notifications and Invitations.</p>
+                      <form method='POST'>
+
+                        <div id="list-example" class="list-group">
+                          <a class="list-group-item list-group-item-action" href="#list-item-1">Lukman</a>
+                          <a class="list-group-item list-group-item-action" href="#list-item-2">Dawne</a>
+                          <a class="list-group-item list-group-item-action" href="#list-item-3">Lance</a>
+                          <a class="list-group-item list-group-item-action" href="#list-item-4">Jai</a>
+                        </div>
+                        <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
+                          <h4 id="list-item-1">Lukman</h4>
+                          <p>...</p>
+                          <h4 id="list-item-2">Dawne</h4>
+                          <p>...</p>
+                          <h4 id="list-item-3">Lance</h4>
+                          <p>...</p>
+                          <h4 id="list-item-4">Jai</h4>
+                          <p>...</p>
+                        </div>
+                       
+                      </form>
+                    </div>
+                  </div>
                 </div>
 
-          
+                    
               
              
