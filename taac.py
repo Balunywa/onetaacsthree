@@ -14,3 +14,4 @@ def add_users():
     db.session.commit()
     
 add_users()
+
