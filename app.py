@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = 'test'
 class InfoForm(FlaskForm):
     
     timedeparted = StringField ('Departure Time')
-    location = StringField ('Location',validators=[DataRequired()])
+    location = StringField ('Name',validators=[DataRequired()])
     carplate = StringField('Car No Plate', validators=[DataRequired()])
     phonenumber = StringField('Phone Number', validators=[DataRequired()])
     select = SelectField('Person Your Visiting', choices=[('Lukman', 'Lukman'), 
@@ -25,7 +25,7 @@ class InfoForm(FlaskForm):
                               ('Old-Friend', 'Old_Friend'), ('New_Friend', 'New_Friend')])
     event = RadioField('Please chose the event',
                        choices=[('Party', 'Party'), ('Clubing','Clubing'), 
-                                ('Shopping', 'Shopping'), ('Other', 'Other')])
+                                 ('Other', 'Other')])
     feedback = TextAreaField('Any Other Notes')
     enter = SubmitField('Enter')
         
@@ -38,7 +38,7 @@ def index():
     if form.validate_on_submit(): 
         
         session['timedeparted'] = form.timedeparted.data
-        session['location'] = form.location.data
+        session['Name'] = form.location.data
         session['carplate'] = form.carplate.data
         session['phonenumber'] = form.phonenumber.data
         session['select'] = form.select.data
