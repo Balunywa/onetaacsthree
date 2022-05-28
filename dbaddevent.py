@@ -15,7 +15,7 @@ def add_eventname():
     db.session.add_all([new_name])
     db.session.commit()
     print("Welcome to the " + new_name.event_name)
-    
+    #test
 
 add_event()
 add_eventname()
