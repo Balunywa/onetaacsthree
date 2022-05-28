@@ -1,5 +1,0 @@
-<form action="process" method="post">
-    <label for="username">Please enter your name: </label>
-    <input type="text" id="username" name="username"><br>
-    <input type="submit" value="SEND">
-  </form>
