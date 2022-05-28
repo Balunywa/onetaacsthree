@@ -25,6 +25,14 @@
       #menuBar {
       color: darkgrey !important;
       }
+
+    body{z-index:-1
+    
+    }
+
+    $('[data-toggle=dropdown]').each(function() {
+      this.addEventListener('click', function() {}, false);
+     });
       
     </style>
 </head>
