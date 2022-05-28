@@ -72,6 +72,6 @@ def comments():
     return render_template('comments.html', comments=comments)
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+#if __name__ == '__main__':
+#    app.run(debug=True)
 

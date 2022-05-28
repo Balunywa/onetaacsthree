@@ -1,56 +1,198 @@
-from flask import Flask, render_template,session,redirect,url_for
-from flask_wtf import FlaskForm
-from wtforms import (StringField, SubmitField, 
-                     BooleanField, DateTimeField, 
-                     RadioField, SelectField, 
-                     TextAreaField)
+import os
+import pyodbc
+from flask import Flask, render_template, url_for, redirect
+from LoopForms import PostEventForm, DelEventForm
+import urllib.parse 
+from flask_sqlalchemy import SQLAlchemy
 
-from wtforms.validators import DataRequired
+params = urllib.parse.quote_plus("DRIVER={SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450")
 
-# from flask import Flask  # From 'flask' module import 'Flask' class
-app = Flask(__name__)  # Construct an instance of Flask class for our webapp
+app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'test'
+#app.config['SQLALCHEMY_DATABASE_URL'] = 'sqllite:///'+os.path.join(basedir, 'data.sqlite')
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'mysecretkey'
 
-class InfoForm(FlaskForm):
+###################################
+### SQL Data Basse ###
+###################################
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "mssql+pyodbc:///?odbc_connect=%s" % params
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+
+db = SQLAlchemy(app)
+
+###################################################
+
+ #Cretes a Class/Model and inherits a class db.model
+ ###Models.PY as possible file### 
+ 
+ ### Event Type Model #####
+ 
+##################################################
+
+                  
+class EventType(db.Model):
     
-    timedeparted = StringField ('Departure Time')
-    location = StringField ('Name',validators=[DataRequired()])
-    carplate = StringField('Car No Plate', validators=[DataRequired()])
-    phonenumber = StringField('Phone Number', validators=[DataRequired()])
-    select = SelectField('Person Your Visiting', choices=[('Lukman', 'Lukman'), 
-                                                         ('Dawne', 'Dawne')], validators=[DataRequired()])
-    relationship = RadioField('Please chose relationship', 
-                              choices=[('Family', 'Family'), 
-                              ('Old-Friend', 'Old_Friend'), ('New_Friend', 'New_Friend')])
-    event = RadioField('Please chose the event',
-                       choices=[('Party', 'Party'), ('Clubing','Clubing'), 
-                                 ('Other', 'Other')])
-    feedback = TextAreaField('Any Other Notes')
-    enter = SubmitField('Enter')
-        
-@app.route('/',methods=['GET', 'POST'])
+    #manaul table name
+    __tablename__ = 'eventtype'
+    
+    #uses that imported class to creae cloums with an intiall primart key (unique through out the tale)
+    id = db.Column('eventtype_id', db.Integer, primary_key = True)
+    event_types = db.Column(db.Text)
+    
+    #One to Many Relationship
+    #The table will be a parent table with oen row having accessing to more than one row in another table
+    #This creates relationship between event types  table and the event name
+    #Bike to Many Services..
+    eventname = db.relationship('EventName', backref='EventType', lazy='dynamic')
+    
+    #One to One Relatioship
+    #This table will have one row connecting to only one row in the other DB table
+    #One Bike & One Owner
+    owner = db.relationship ('Owner', backref='EventType', uselist=False)
+       
+       #initalizes the class vairbaleS
+    def __init__(self, event_types):
+         self.event_types = event_types
+                   
+    def check_event_access(self):
+       if self.owner:
+            return f" Welcome to the  {self.event_name} and try to have some fun at our {self.first_location}"
+       else:
+         return f"You not regsitered for this {self.event_name} today"
+                       
+    def __repr__(self):
+              return f"{self.event_types}"
+          
+    
+    
+################################################################
 
+#### Event Name Model ######
+                   
+############################################################### 
+
+class EventName(db.Model):
+    
+    #manaul table name
+    __tablename__ = 'eventname'
+    
+    id = db.Column('eventname_id', db.Integer, primary_key = True)
+    
+    event_name = db.Column(db.Text)
+    event_location = db.Column(db.Text)
+    #map a forgein key from the bike table - priary key in another table - this key will be entered to specific entries
+    eventtype_id = db.Column(db.Integer, db.ForeignKey('eventtype.eventtype_id'))
+        
+    def __init__(self, event_name, eventtype_id, event_location):
+        
+           self.event_name = event_name
+           self.eventtype_id = eventtype_id
+           self.event_location = event_location
+                    
+    def __repr__(self):
+       
+        return f"{self.event_name} {self.eventtype_id} {self.event_location}"
+    
+#####################################################
+
+##### Owner Model ################
+
+#################################################
+
+class Owner(db.Model):
+    
+    #manaul table name
+    __tablename__ = 'owners'
+    
+    id = db.Column('owners_id', db.Integer, primary_key = True)
+    
+    first_name = db.Column(db.Text)
+    last_name = db.Column(db.Text)
+    evnettype_id = db.Column(db.Integer, db.ForeignKey('eventtype.eventtype_id'))
+    
+        
+    def __init__(self, first_name, event_types, last_name):
+        
+           self.first_name = first_name
+           self.event_types = event_types
+           self.last_name = last_name
+             
+    def __repr__(self):
+       
+        return f"{self.first_name} {self.eventtypes_id} {self.last_name}"
+    
+
+############################################
+
+#### View Function Take in user infomration and save/update
+
+##### Map Bussines Logic to the HTML and CSS templates ########
+
+###########################################  
+
+@app.route('/')
 def index():
-         
-    form = InfoForm()
+    return render_template('home.html')
+
+
+@app.route('/post',methods=['GET', 'POST'] )
+def post_event():
+    form = PostEventForm()
     
-    if form.validate_on_submit(): 
+    if form.validate_on_submit():
         
-        session['timedeparted'] = form.timedeparted.data
-        session['Name'] = form.location.data
-        session['carplate'] = form.carplate.data
-        session['phonenumber'] = form.phonenumber.data
-        session['select'] = form.select.data
-        session['relationship'] = form.relationship.data
-        session['event'] = form.event.data
-        session['feedback'] = form.feedback.data
+        post = form.event_types.data
+        new_post = EventType(post)
+        db.session.add(new_post)
+        db.session.commit()
         
-        return redirect(url_for('thankyou'))
-            
-    return render_template('gatepass.html',form=form)
+        return redirect(url_for('list_events'))
+    
+    return render_template('post_event.html', form = form )   
+        
+       
+@app.route('/listevents')
+def list_events(): 
+    event_list = EventType.query.all()
+    return render_template('list_events.html', event_list = event_list)
+    
+
+@app.route('/delete', methods=['GET','POST'])
+def del_event_type():
+    form =  DelEventForm()
+    
+    if form.validate_on_submit():
+        eventid = form.eventtype_id.data
+        eventtype = EventType.query.get(eventid)
+        db.session.delete((eventtype))
+        db.session.commit
+        
+        return redirect(url_for('list_events'))
+    
+    return render_template('delete_event.html', form = form )
+    
     
 if __name__ == '__main__':
     app.run(debug=True)
+    
+    
+        
+        
+        
+    
+    
+
+        
+        
+        
+    
+    
+    
+    
+
+
     
     

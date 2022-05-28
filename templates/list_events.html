@@ -1,0 +1,15 @@
+{%  extends "base.html" %}
+
+{% block content  %}
+<div class="jumbotron">
+<h1 class="display-4">These are your previous loop activities!</h1>
+<br>
+<ul class="list-group">
+        {% for events in event_list  %}
+        <li class="list-group-item list-group-item-action list-group-item-dark">{{events}}</li>
+        {%  endfor %}
+    </ul>
+</div>
+
+{% endblock %}
+
