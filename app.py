@@ -13,7 +13,7 @@ from opencensus.trace import config_integration
 
 logger = logging.getLogger(__name__)
 
-params = urllib.parse.quote_plus("DRIVER='{ODBC Driver 17 for SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450;Connection Timeout=60")
+params = urllib.parse.quote_plus("DRIVER={ODBC Driver 17 for SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450;Connection Timeout=60")
 conn_str = 'mssql+pyodbc:///?odbc_connect={}'.format(params)
 
 
