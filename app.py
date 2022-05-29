@@ -7,6 +7,11 @@ from flask_sqlalchemy import SQLAlchemy
 from applicationinsights.flask.ext import AppInsights
 import logging
 from opencensus.ext.azure.log_exporter import AzureLogHandler
+from logging import StreamHandler
+from opencensus.ext.azure import metrics_exporter
+from opencensus.trace import config_integration
+
+logger = logging.getLogger(__name__)
 
 params = urllib.parse.quote_plus("DRIVER={SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450;Connection Timeout=60")
 conn_str = 'mssql+pyodbc:///?odbc_connect={}'.format(params)
@@ -36,6 +41,20 @@ app.config['APPINSIGHTS_INSTRUMENTATIONKEY'] = 'b9955837-006a-4eb0-bb9c-360a7e7d
 # log requests, traces and exceptions to the Application Insights service
 appinsights = AppInsights(app)
 
+streamHandler = StreamHandler()
+app.logger.addHandler(streamHandler)
+
+
+
+
+# Trace integrations for sqlalchemy library
+config_integration.trace_integrations(['sqlalchemy'])
+
+# Trace integrations for requests library
+config_integration.trace_integrations(['requests'])
+
+# FlaskMiddleware will track requests for the Flask application and send
+# request/dependency telemetry to Azure Monitor
 
 ###################################################
 
@@ -45,6 +64,8 @@ appinsights = AppInsights(app)
  ### Event Type Model #####
  
 ##################################################
+
+
 
                   
 class EventType(db.Model):
@@ -207,6 +228,17 @@ def del_event_type():
     return render_template('delete_event.html', form = form )
 
 
+exporter = metrics_exporter.new_metrics_exporter(
+    enable_standard_metrics=False,
+    connection_string='InstrumentationKey=b9955837-006a-4eb0-bb9c-360a7e7da449;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/'
+    )
+
+# Exporter for logs, will send logging data
+logger.addHandler(
+    AzureLogHandler(
+        connection_string='InstrumentationKey=b9955837-006a-4eb0-bb9c-360a7e7da449;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/'
+        )
+    )
     
 if __name__ == '__main__':
     app.run(debug=True)
