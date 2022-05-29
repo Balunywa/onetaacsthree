@@ -5,8 +5,8 @@ from LoopForms import PostEventForm, DelEventForm
 import urllib.parse 
 from flask_sqlalchemy import SQLAlchemy
 from applicationinsights.flask.ext import AppInsights
-
-
+import logging
+from opencensus.ext.azure.log_exporter import AzureLogHandler
 
 params = urllib.parse.quote_plus("DRIVER={SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450;Connection Timeout=60")
 conn_str = 'mssql+pyodbc:///?odbc_connect={}'.format(params)
@@ -146,6 +146,10 @@ class Owner(db.Model):
 ##### Map Bussines Logic to the HTML and CSS templates ########
 
 ###########################################  
+@app.after_request
+def after_request(response):
+    appinsights.flush()
+    return response
 
 @app.route('/')
 def index():
@@ -156,12 +160,16 @@ def index():
 def post_event():
     form = PostEventForm()
     
-    if form.validate_on_submit():
-        
+    if form.validate_on_submit(): 
         post = form.event_types.data
         new_post = EventType(post)
         db.session.add(new_post)
         db.session.commit()
+        app.logger.debug('This is a debug log message')
+        app.logger.info('This is an information log message')
+        app.logger.warn('This is a warning log message')
+        app.logger.error('This is an error message')
+        app.logger.critical('This is a critical message')
         
         return redirect(url_for('list_events'))
     
@@ -171,6 +179,11 @@ def post_event():
 @app.route('/listevents')
 def list_events(): 
     event_list = EventType.query.all()
+    app.logger.debug('This is a debug log message')
+    app.logger.info('This is an information log message')
+    app.logger.warn('This is a warning log message')
+    app.logger.error('This is an error message')
+    app.logger.critical('This is a critical message')
     return render_template('list_events.html', event_list = event_list)
     
 
@@ -183,11 +196,17 @@ def del_event_type():
         eventtype = EventType.query.get(eventid)
         db.session.delete((eventtype))
         db.session.commit
+        app.logger.debug('This is a debug log message')
+        app.logger.info('This is an information log message')
+        app.logger.warn('This is a warning log message')
+        app.logger.error('This is an error message')
+        app.logger.critical('This is a critical message')
         
         return redirect(url_for('list_events'))
     
     return render_template('delete_event.html', form = form )
-    
+
+
     
 if __name__ == '__main__':
     app.run(debug=True)
