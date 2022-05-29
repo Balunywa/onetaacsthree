@@ -4,8 +4,13 @@ from flask import Flask, render_template, url_for, redirect
 from LoopForms import PostEventForm, DelEventForm
 import urllib.parse 
 from flask_sqlalchemy import SQLAlchemy
+from applicationinsights.flask.ext import AppInsights
+
+
 
 params = urllib.parse.quote_plus("DRIVER={SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450;Connection Timeout=60")
+conn_str = 'mssql+pyodbc:///?odbc_connect={}'.format(params)
+
 
 app = Flask(__name__)
 
@@ -22,6 +27,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "mssql+pyodbc:///?odbc_connect=%s" % par
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
 db = SQLAlchemy(app)
+
+########################################
+#### Application Insights ########
+########################################
+
+app.config['APPINSIGHTS_INSTRUMENTATIONKEY'] = 'b9955837-006a-4eb0-bb9c-360a7e7da449;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/'
+# log requests, traces and exceptions to the Application Insights service
+appinsights = AppInsights(app)
+
 
 ###################################################
 
