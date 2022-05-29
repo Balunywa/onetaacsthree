@@ -37,7 +37,8 @@ db = SQLAlchemy(app)
 #### Application Insights ########
 ########################################
 
-app.config['APPINSIGHTS_INSTRUMENTATIONKEY'] = 'b9955837-006a-4eb0-bb9c-360a7e7da449;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/'
+app.config['APPINSIGHTS_INSTRUMENTATIONKEY'] = 'b9955837-006a-4eb0-bb9c-360a7e7da449'
+#wjakfqzcfpjckq8hz0hd647cubve3kz1126gt0um
 # log requests, traces and exceptions to the Application Insights service
 appinsights = AppInsights(app)
 
@@ -230,13 +231,13 @@ def del_event_type():
 
 exporter = metrics_exporter.new_metrics_exporter(
     enable_standard_metrics=False,
-    connection_string='InstrumentationKey=b9955837-006a-4eb0-bb9c-360a7e7da449;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/'
+    connection_string='InstrumentationKey=b9955837-006a-4eb0-bb9c-360a7e7da449'
     )
 
 # Exporter for logs, will send logging data
 logger.addHandler(
     AzureLogHandler(
-        connection_string='InstrumentationKey=b9955837-006a-4eb0-bb9c-360a7e7da449;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/'
+        connection_string='InstrumentationKey=b9955837-006a-4eb0-bb9c-360a7e7da449'
         )
     )
     
