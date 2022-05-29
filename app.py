@@ -5,7 +5,7 @@ from LoopForms import PostEventForm, DelEventForm
 import urllib.parse 
 from flask_sqlalchemy import SQLAlchemy
 
-params = urllib.parse.quote_plus("DRIVER={SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450")
+params = urllib.parse.quote_plus("DRIVER={SQL Server};SERVER=cbserver-one.database.windows.net;DATABASE=onetaacs;UID=balunlu;PWD=Test#123450;Connection Timeout=60")
 
 app = Flask(__name__)
 
