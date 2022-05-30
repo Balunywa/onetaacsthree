@@ -1,10 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField
+from wtforms import (StringField, IntegerField, 
+                     SubmitField, RadioField, 
+                     SelectField, DateTimeField, 
+                     BooleanField, TextAreaField)
+from wtforms.validators import DataRequired
 
 class PostEventForm(FlaskForm):
-    event_types = StringField('Event name: ')
-    loved_ones_name = StringField('Loved ones name: ')
-    phone_or_email = StringField('Phone no or Email: ')
+    event_types = StringField('Event name:', validators=[DataRequired()])
+    phone_or_email = StringField('Loved one phone or email:',validators=[DataRequired()])
+    acompained_by = StringField('Who are you with:')
     submit = SubmitField('Post event type')
     
 class DelEventForm(FlaskForm):

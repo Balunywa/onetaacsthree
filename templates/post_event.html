@@ -1,5 +1,4 @@
 <br>
-
 {% extends "base.html" %}
 {% block content %}
 
@@ -15,26 +14,18 @@
             {{ form.event_types.label }} <br> {{ form.event_types() }}
             <br>
             <br>
-            <div class="col-12">
-              <label for="Start date">Start date:</label>
-              <input type="date" id="Date" name="Date">
-              <label for="Start time">Start time:</label>
-              <input type="time" name="myDateTime" id="myDateTime" />
-            </div>
-            <br>
-            <div class="col-12">
-              <label for="Start date">End date:</label>
-              <input type="date" id="Date" name="Date">
-              <label for="Start time">End time:</label>
-              <input type="time" name="myDateTime" id="myDateTime" />
-            </div>
-            <br>
-            {{ form.loved_ones_name.label }} <br> {{ form.loved_ones_name() }}
-            <br>
-            <br>
             {{ form.phone_or_email.label }} <br> {{ form.phone_or_email() }}
             <br>
             <br>
+            {{ form. acompained_by.label }} <br> {{ form. acompained_by() }}
+            <br>
+            <br>
+            <p>
+              <textarea name="comment"
+                          placeholder="Anything else you want to say!"
+                          cols="60"
+                          rows="5"></textarea>
+          </p>
             <p>
                 {{form.submit()}}
             </p>
