@@ -13,3 +13,36 @@ Write-Host “Created an App Service Certificate copy at: $currentDirectory\apps
 #Server=localhost;Database=master;Trusted_Connection=True;
 
 
+
+<style>
+
+    @media only screen and (max-width: 600px){
+      .navbar-overlay {
+      background: #333333;
+      }
+  }
+  .navbar-overlay {
+      margin-bottom: -104px; 
+      z-index: 1; 
+  }
+  #menuBar {
+  color: darkgrey !important;
+  }
+
+body{z-index:-1
+
+}
+   </style>
+
+
+
+
+
+
+
+   
+
+
+
+
+

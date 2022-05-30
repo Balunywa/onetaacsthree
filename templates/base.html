@@ -1,101 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>InThaLoop</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <head>
+        <title>InThaLoop</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
-  <!-- Dont forget to add font awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script type="text/javascript">
+            var appInsights =
+                window.appInsights ||
+                (function (config) {
+                    function s(config) {
+                        t[config] = function () {
+                            var i = arguments;
+                            t.queue.push(function () {
+                                t[config].apply(t, i);
+                            });
+                        };
+                    }
+                    var t = { config: config },
+                        r = document,
+                        f = window,
+                        e = "script",
+                        o = r.createElement(e),
+                        i,
+                        u;
+                    for (
+                        o.src = config.url || "//az416426.vo.msecnd.net/scripts/a/ai.0.js",
+                            r.getElementsByTagName(e)[0].parentNode.appendChild(o),
+                            t.cookie = r.cookie,
+                            t.queue = [],
+                            i = ["Event", "Exception", "Metric", "PageView", "Trace"];
+                        i.length;
 
-  <style>
-      @media only screen and (max-width: 600px){
-          .navbar-overlay {
-          background: #333333;
-          }
-      }
-      .navbar-overlay {
-          margin-bottom: -104px; 
-          z-index: 1; 
-      }
-      #menuBar {
-      color: darkgrey !important;
-      }
+                    )
+                        s("track" + i.pop());
+                    return (
+                        config.disableExceptionTracking ||
+                            ((i = "onerror"),
+                            s("_" + i),
+                            (u = f[i]),
+                            (f[i] = function (config, r, f, e, o) {
+                                var s = u && u(config, r, f, e, o);
+                                return s !== !0 && t["_" + i](config, r, f, e, o), s;
+                            })),
+                        t
+                    );
+                })({
+                    instrumentationKey: "b9955837-006a-4eb0-bb9c-360a7e7da449;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/",
+                });
+            window.appInsights = appInsights;
+            appInsights.trackPageView();
+        </script>
+    </head>
 
-    body{z-index:-1
-    
-    }
+    <body>
+        <nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">InThaLoop</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-item nav-link" href="{{ url_for('index')}}">Home</a>
+                        </li>
 
+                        <li class="nav-item active">
+                            <a class="nav-item nav-link" href="{{ url_for('post_event')}}">Post loops</a>
+                        </li>
 
-    </style>
-  
-  <script type="text/javascript">
-      var appInsights=window.appInsights||function(config){
-      function s(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},r=document,f=window,e="script",o=r.createElement(e),i,u;for(o.src=config.url||"//az416426.vo.msecnd.net/scripts/a/ai.0.js",r.getElementsByTagName(e)[0].parentNode.appendChild(o),t.cookie=r.cookie,t.queue=[],i=["Event","Exception","Metric","PageView","Trace"];i.length;)s("track"+i.pop());return config.disableExceptionTracking||(i="onerror",s("_"+i),u=f[i],f[i]=function(config,r,f,e,o){var s=u&&u(config,r,f,e,o);return s!==!0&&t["_"+i](config,r,f,e,o),s}),t}({
-      instrumentationKey: "b9955837-006a-4eb0-bb9c-360a7e7da449;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/"
-      });
-      window.appInsights=appInsights;
-      appInsights.trackPageView();
-  </script>
+                        <li class="nav-item active">
+                            <a class="nav-item nav-link" href="{{ url_for('list_events')}}">List loops</a>
+                        </li>
 
-</head>
+                        <li class="nav-item active">
+                            <a class="nav-item nav-link" href="{{ url_for('del_event_type')}}">Delete loops</a>
+                        </li>
 
-<body>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">InThaLoop</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-         
-        <li class="nav-item active">
-          <a class="nav-item nav-link" href="{{ url_for('index')}}">Home</a>
-      </li>
-
-      <li class="nav-item active">
-        <a class="nav-item nav-link" href="{{ url_for('post_event')}}">Post loops</a>
-      </li>  
-
-    <li class="nav-item active"> 
-      <a class="nav-item nav-link" href="{{ url_for('list_events')}}">List loops</a>
-     </li>
-
-   <li class="nav-item active"> 
-    <a class="nav-item nav-link" href="{{ url_for('del_event_type')}}">Delete loops</a>
-   </li>
-   
-   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      You
-    </a>
-    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-      <a class="dropdown-item" href="#">Account Settings</a>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#">Loop Posts and Actives</a>
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="#">Sing Out</a>
-    </div>
-  </li>
-</ul>
-<div>
-  <form class="d-flex" role="search">
-    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success" type="submit">Search</button>
-  </form>
-</div>
-</nav>
-</div>
-
-  <br>
-
-    {% block content %}
-
-    {% endblock %}
-    
-</body>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                You
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                                <li><a class="dropdown-item" href="#">Account Settings</a></li>
+                                <div class="dropdown-divider"></div>
+                                <li><a class="dropdown-item" href="#">Recent Activities</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#">Sing Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <br />
+        {% block content %} {% endblock %}
+    </body>
 </html>
