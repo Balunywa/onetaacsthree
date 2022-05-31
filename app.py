@@ -77,21 +77,27 @@ class EventType(db.Model):
     #uses that imported class to creae cloums with an intiall primart key (unique through out the tale)
     id = db.Column('eventtype_id', db.Integer, primary_key = True)
     event_types = db.Column(db.Text)
-    
+    phone_or_email = db.Column(db.Text)
+    accompained_by = db.Column(db.Text)
+    comment = db.Column(db.Text)
+  
     #One to Many Relationship
     #The table will be a parent table with oen row having accessing to more than one row in another table
     #This creates relationship between event types  table and the event name
     #Bike to Many Services..
-    eventname = db.relationship('EventName', backref='EventType', lazy='dynamic')
+    #eventname = db.relationship('EventName', backref='EventType', lazy='dynamic')
     
     #One to One Relatioship
     #This table will have one row connecting to only one row in the other DB table
     #One Bike & One Owner
-    owner = db.relationship ('Owner', backref='EventType', uselist=False)
+    #owner = db.relationship ('Owner', backref='EventType', uselist=False)
        
        #initalizes the class vairbaleS
-    def __init__(self, event_types):
+    def __init__(self, event_types, phone_or_email, accompained_by, comment):
          self.event_types = event_types
+         self.phone_or_email = phone_or_email
+         self.accompained_by = accompained_by
+         self.comment = comment
                    
     def check_event_access(self):
        if self.owner:
@@ -100,7 +106,7 @@ class EventType(db.Model):
          return f"You not regsitered for this {self.event_name} today"
                        
     def __repr__(self):
-              return f"{self.event_types}"
+              return f"{self.event_types, self.phone_or_email, self.accompained_by, self.comment}"
           
     
     
@@ -120,17 +126,17 @@ class EventName(db.Model):
     event_name = db.Column(db.Text)
     event_location = db.Column(db.Text)
     #map a forgein key from the bike table - priary key in another table - this key will be entered to specific entries
-    eventtype_id = db.Column(db.Integer, db.ForeignKey('eventtype.eventtype_id'))
+    #eventtype_id = db.Column(db.Integer, db.ForeignKey('eventtype.eventtype_id'))
         
-    def __init__(self, event_name, eventtype_id, event_location):
+    def __init__(self, event_name,  event_location):
         
            self.event_name = event_name
-           self.eventtype_id = eventtype_id
+           #self.eventtype_id = eventtype_id
            self.event_location = event_location
                     
     def __repr__(self):
        
-        return f"{self.event_name} {self.eventtype_id} {self.event_location}"
+        return f"{self.event_name} {self.event_location}"
     
 #####################################################
 
@@ -147,18 +153,18 @@ class Owner(db.Model):
     
     first_name = db.Column(db.Text)
     last_name = db.Column(db.Text)
-    evnettype_id = db.Column(db.Integer, db.ForeignKey('eventtype.eventtype_id'))
+    #evnettype_id = db.Column(db.Integer, db.ForeignKey('eventtype.eventtype_id'))
     
         
-    def __init__(self, first_name, event_types, last_name):
+    def __init__(self, first_name,  last_name):
         
            self.first_name = first_name
-           self.event_types = event_types
+           #self.event_types = event_types
            self.last_name = last_name
              
     def __repr__(self):
        
-        return f"{self.first_name} {self.eventtypes_id} {self.last_name}"
+        return f"{self.first_name}  {self.last_name}"
     
 
 ############################################
@@ -180,13 +186,20 @@ def index():
 
 @app.route('/post',methods=['GET', 'POST'] )
 def post_event():
-    form = PostEventForm()
-    
+    form = PostEventForm()   
     if form.validate_on_submit(): 
-        post = form.event_types.data
-        new_post = EventType(post)
-        db.session.add(new_post)
+        event = form.event_types.data
+        email=  form.phone_or_email.data 
+        accomp= form.accompained_by.data 
+        comment = form.comment.data
+        #db.create_all()
+        new_post = EventType (event, email, accomp, comment)
+        db.session.add_all([new_post])
         db.session.commit()
+        #db.create_all()
+        #new_event = EventType('online','test','one','tw')
+        #db.session.add_all([new_event])
+        #db.session.commit()
         app.logger.debug('This is a debug log message')
         app.logger.info('This is an information log message')
         app.logger.warn('This is a warning log message')
@@ -212,9 +225,8 @@ def list_events():
 @app.route('/delete', methods=['GET','POST'])
 def del_event_type():
     form =  DelEventForm()
-    
     if form.validate_on_submit():
-        eventid = form.eventtype_id.data
+        eventid = form.id.data
         eventtype = EventType.query.get(eventid)
         db.session.delete((eventtype))
         db.session.commit
@@ -225,7 +237,6 @@ def del_event_type():
         app.logger.critical('This is a critical message')
         
         return redirect(url_for('list_events'))
-    
     return render_template('delete_event.html', form = form )
 
 

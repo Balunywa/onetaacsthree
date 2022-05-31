@@ -10,27 +10,23 @@
       <div class="card">
         <div class="card-body">
           <form method='POST'>
-            {{ form.hidden_tag() }}
-            {{ form.event_types.label }} <br> {{ form.event_types() }}
+            {{ form.hidden_tag()}}
+            {{ form.event_types.label}} <br> {{form.event_types()}}
             <br>
             <br>
-            {{ form.phone_or_email.label }} <br> {{ form.phone_or_email() }}
+            {{form.phone_or_email.label}} <br> {{form.phone_or_email()}}
             <br>
             <br>
-            {{ form. acompained_by.label }} <br> {{ form. acompained_by() }}
+            {{form.accompained_by.label}} <br> {{form.accompained_by()}}
             <br>
             <br>
-            <p>
-              <textarea name="comment"
-                          placeholder="Anything else you want to say!"
-                          cols="60"
-                          rows="5"></textarea>
-          </p>
+            {{form.comment.label}} <br> {{form.comment()}}
+            <br>
+            <br>
             <p>
                 {{form.submit()}}
             </p>
           </form>
-        
         </div>
       </div>
     </div>

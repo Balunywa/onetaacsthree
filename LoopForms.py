@@ -8,11 +8,12 @@ from wtforms.validators import DataRequired
 class PostEventForm(FlaskForm):
     event_types = StringField('Event name:', validators=[DataRequired()])
     phone_or_email = StringField('Loved one phone or email:',validators=[DataRequired()])
-    acompained_by = StringField('Who are you with:')
+    accompained_by = StringField('Who are are you with:')
+    comment = StringField('Comments:')
     submit = SubmitField('Post event type')
     
 class DelEventForm(FlaskForm):
-    event_type_id = IntegerField('Id Number of the Event to Remove: ')
+    id = IntegerField('Id number of the event to remove: ')
     submit = SubmitField('Remove Event')
     
     
